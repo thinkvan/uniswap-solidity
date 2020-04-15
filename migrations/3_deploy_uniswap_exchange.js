@@ -1,10 +1,8 @@
 // declare library
 var SafeMath = artifacts.require("./Library/SafeMath.sol");
-var IUniswapFactory = artifacts.require("./interfaces/IUniswapFactory.sol");
-var IERC20 = artifacts.require("./interfaces/IERC20.sol");
 
 // declare contract
-var UniswapFactory = artifacts.require("./uniswap/UniswapFactory.sol");
+var UniswapExchange = artifacts.require("./uniswap/UniswapExchange.sol");
 var ERC20 = artifacts.require("./tokens/ERC20.sol");
 
 module.exports = function(deployer, network, accounts) {
@@ -18,13 +16,13 @@ module.exports = function(deployer, network, accounts) {
   
   deployer.then(async ()=>{
     // deploy library first
-    // await deployer.deploy(SafeMath);
-    // await deployer.deploy(IERC20);    
+    await deployer.deploy(SafeMath);
 
     // deploy UniswapFactory
-    // await deployer.link(SafeMath, UniswapFactory);
-    let uniswapFactory = await deployer.deploy(UniswapFactory);
-    // let erc20 = await deployer.deploy(ERC20, {from: admin});
+    await deployer.link(SafeMath, UniswapExchange);
+
+    let uniswapExchange = await deployer.deploy(UniswapExchange);
+    let erc20 = await deployer.deploy(ERC20);
   })
   
 }  
